@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "../styles/WeatherCard.module.css";
 
 const WeatherCard = ({ weatherData }: any) => {

@@ -1,5 +1,3 @@
-// src/pages/HumidityMap.tsx
-
 import React, { useState } from "react";
 import {
   MapContainer,
