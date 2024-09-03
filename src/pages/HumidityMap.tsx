@@ -9,9 +9,10 @@ import {
 import "leaflet/dist/leaflet.css";
 import {
   fetchWeatherData,
-  fetchWeatherForecast
+  fetchWeatherForecast,
 } from "../services/weatherService";
 import WeatherCard from "../component/WeatherCard";
+import SearchField from "../component/SearchField"; // Import the SearchField component
 
 const HumidityMap = () => {
   const [humidityData, setHumidityData] = useState<any>(null);
@@ -35,19 +36,14 @@ const HumidityMap = () => {
     return null;
   };
 
-  const handleSearch = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const country = (event.target as any).country.value;
-    const forecast = await fetchWeatherForecast(country);
+  const handleSearch = async (searchTerm: string) => {
+    const forecast = await fetchWeatherForecast(searchTerm);
     setWeatherData(forecast);
   };
 
   return (
     <div>
-      <form onSubmit={handleSearch} style={{ padding: "10px" }}>
-        <input type="text" name="country" placeholder="Search for a country" />
-        <button type="submit">Search</button>
-      </form>
+      <SearchField placeholder="Search for a country" onSearch={handleSearch} />
       <MapContainer
         center={[20, 0]}
         zoom={2}
