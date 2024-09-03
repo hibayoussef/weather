@@ -37,20 +37,36 @@ const fetchWeatherForecast = async (country: string) => {
   }
 };
 
-const WeatherCard = ({ weatherData }: any) => {
-  if (!weatherData || !weatherData.list) return null;
 
-  const forecastItems = weatherData.list.map((item: any) => (
-    <div key={item.dt} style={{ marginRight: "20px", textAlign: "center" }}>
-      <strong>{new Date(item.dt * 1000).toLocaleDateString()}</strong>
-      <br />
-      Temperature: {Math.round(item.main.temp - 273.15)}°C
-      <br />
-      {item.weather[0].main === "Clear" && "☀️"}
-      {item.weather[0].main === "Clouds" && "☁️"}
-      {item.weather[0].main === "Rain" && "🌧️"}
-    </div>
-  ));
+const WeatherCard = ({ weatherData }: any) => {
+  if (!weatherData || !weatherData.list) return <p>No data available</p>;
+
+  // Extract forecast data
+  const forecast = weatherData.list.reduce((acc: any, item: any) => {
+    const date = new Date(item.dt * 1000);
+    const day = date.toLocaleDateString("en-US", { weekday: "long" });
+    const hour = date.getHours();
+
+    if (!acc[day]) {
+      acc[day] = { hours: [], temperatures: [], emojis: [] };
+    }
+
+    acc[day].hours.push(hour);
+    acc[day].temperatures.push(`${Math.round(item.main.temp - 273.15)}°`);
+    acc[day].emojis.push(
+      item.weather[0].main === "Clear"
+        ? "☀️"
+        : item.weather[0].main === "Clouds"
+        ? "☁️"
+        : item.weather[0].main === "Rain"
+        ? "🌧️"
+        : "❓"
+    );
+    return acc;
+  }, {});
+
+  // Get unique days for column headers
+  const days = Object.keys(forecast);
 
   return (
     <div
@@ -62,16 +78,41 @@ const WeatherCard = ({ weatherData }: any) => {
         left: "0",
         right: "0",
         backgroundColor: "#fff",
-        zIndex: 1000, // Ensure the card is on top
-        display: "flex",
-        flexDirection: "row", // Align items horizontally
-        overflowX: "auto", // Allow horizontal scrolling if necessary
-        whiteSpace: "nowrap", // Prevent items from wrapping
-        boxSizing: "border-box", // Include padding in width calculation
-        maxHeight: "150px", // Set a max height if needed
+        zIndex: 1000,
+        display: "grid",
+        gridTemplateColumns: `repeat(${days.length + 1}, 1fr)`,
+        gap: "10px",
+        overflowX: "auto",
+        boxSizing: "border-box",
       }}
     >
-      {forecastItems}
+      <div></div>
+      {days.map((day) => (
+        <div key={day} style={{ textAlign: "center" }}>
+          {day}
+        </div>
+      ))}
+
+      <div style={{ textAlign: "center" }}>Hours</div>
+      {days.map((day) => (
+        <div key={`hours-${day}`} style={{ textAlign: "center" }}>
+          {forecast[day].hours.join(" ")}
+        </div>
+      ))}
+
+      <div style={{ textAlign: "center" }}></div>
+      {days.map((day) => (
+        <div key={`emojis-${day}`} style={{ textAlign: "center" }}>
+          {forecast[day].emojis.join(" ")}
+        </div>
+      ))}
+
+      <div style={{ textAlign: "center" }}>Temperature (°C)</div>
+      {days.map((day) => (
+        <div key={`temp-${day}`} style={{ textAlign: "center" }}>
+          {forecast[day].temperatures.join(" ")}
+        </div>
+      ))}
     </div>
   );
 };
