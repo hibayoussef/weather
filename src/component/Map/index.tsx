@@ -36,8 +36,6 @@ const fetchWeatherForecast = async (country: string) => {
     return null;
   }
 };
-
-
 const WeatherCard = ({ weatherData }: any) => {
   if (!weatherData || !weatherData.list) return <p>No data available</p>;
 
@@ -80,42 +78,58 @@ const WeatherCard = ({ weatherData }: any) => {
         backgroundColor: "#fff",
         zIndex: 1000,
         display: "grid",
-        gridTemplateColumns: `repeat(${days.length + 1}, 1fr)`,
+        gridTemplateColumns: `150px repeat(${days.length}, 1fr)`,
         gap: "10px",
         overflowX: "auto",
         boxSizing: "border-box",
       }}
     >
+      {/* Header for the first column */}
       <div></div>
       {days.map((day) => (
-        <div key={day} style={{ textAlign: "center" }}>
+        <div key={day} style={{ textAlign: "center", fontWeight: "bold" }}>
           {day}
         </div>
       ))}
 
-      <div style={{ textAlign: "center" }}>Hours</div>
+      {/* Header for the "Hours" row */}
+      <div style={{ textAlign: "center", fontWeight: "bold" }}>Hours</div>
       {days.map((day) => (
-        <div key={`hours-${day}`} style={{ textAlign: "center" }}>
+        <div
+          key={`hours-${day}`}
+          style={{ textAlign: "center", whiteSpace: "nowrap" }}
+        >
           {forecast[day].hours.join(" ")}
         </div>
       ))}
 
-      <div style={{ textAlign: "center" }}></div>
+      {/* Header for the "Emojis" row */}
+      <div style={{ textAlign: "center", fontWeight: "bold" }}></div>
       {days.map((day) => (
-        <div key={`emojis-${day}`} style={{ textAlign: "center" }}>
+        <div
+          key={`emojis-${day}`}
+          style={{ textAlign: "center", whiteSpace: "nowrap" }}
+        >
           {forecast[day].emojis.join(" ")}
         </div>
       ))}
 
-      <div style={{ textAlign: "center" }}>Temperature (°C)</div>
+      {/* Header for the "Temperature" row */}
+      <div style={{ textAlign: "center", fontWeight: "bold" }}>
+        Temperature (°C)
+      </div>
       {days.map((day) => (
-        <div key={`temp-${day}`} style={{ textAlign: "center" }}>
+        <div
+          key={`temp-${day}`}
+          style={{ textAlign: "center", whiteSpace: "nowrap" }}
+        >
           {forecast[day].temperatures.join(" ")}
         </div>
       ))}
     </div>
   );
 };
+
 
 const HumidityMap = () => {
   const [humidityData, setHumidityData] = useState<any>(null);
