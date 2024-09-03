@@ -1,6 +1,5 @@
-// src/components/WeatherCard.tsx
-
 import React from "react";
+import styles from "../styles/WeatherCard.module.css";
 
 const WeatherCard = ({ weatherData }: any) => {
   if (!weatherData || !weatherData.list) return <p>No data available</p>;
@@ -32,57 +31,35 @@ const WeatherCard = ({ weatherData }: any) => {
 
   return (
     <div
+      className={styles.container}
       style={{
-        border: "1px solid #ccc",
-        padding: "10px",
-        position: "absolute",
-        bottom: "0",
-        left: "0",
-        right: "0",
-        backgroundColor: "#fff",
-        zIndex: 1000,
-        display: "grid",
         gridTemplateColumns: `150px repeat(${days.length}, 1fr)`,
-        gap: "10px",
-        overflowX: "auto",
-        boxSizing: "border-box",
       }}
     >
       <div></div>
       {days.map((day) => (
-        <div key={day} style={{ textAlign: "center", fontWeight: "bold" }}>
+        <div key={day} className={styles.dayTitle}>
           {day}
         </div>
       ))}
 
-      <div style={{ textAlign: "center", fontWeight: "bold" }}>Hours</div>
+      <div className={styles.hoursTitle}>Hours</div>
       {days.map((day) => (
-        <div
-          key={`hours-${day}`}
-          style={{ textAlign: "center", whiteSpace: "nowrap" }}
-        >
+        <div key={`hours-${day}`} className={styles.hours}>
           {forecast[day].hours.join(" ")}
         </div>
       ))}
 
-      <div style={{ textAlign: "center", fontWeight: "bold" }}></div>
+      <div className={styles.hoursTitle}></div>
       {days.map((day) => (
-        <div
-          key={`emojis-${day}`}
-          style={{ textAlign: "center", whiteSpace: "nowrap" }}
-        >
+        <div key={`emojis-${day}`} className={styles.emojis}>
           {forecast[day].emojis.join(" ")}
         </div>
       ))}
 
-      <div style={{ textAlign: "center", fontWeight: "bold" }}>
-        Temperature (°C)
-      </div>
+      <div className={styles.temperatureTitle}>Temperature (°C)</div>
       {days.map((day) => (
-        <div
-          key={`temp-${day}`}
-          style={{ textAlign: "center", whiteSpace: "nowrap" }}
-        >
+        <div key={`temp-${day}`} className={styles.temperatures}>
           {forecast[day].temperatures.join(" ")}
         </div>
       ))}
