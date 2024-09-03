@@ -1,12 +1,9 @@
+// src/services/weatherService.ts
+
 import axios from "axios";
 
-const API_KEY = "your_openweathermap_api_key";
+const API_KEY = "8d06b1764a71cc9ce97e8caffa5f64b1";
 
-interface WeatherData {
-    lat: number;
-    lon: number;
-    name: string;
-}
 export const fetchWeatherData = async (lat: number, lon: number) => {
   try {
     const response = await axios.get(
@@ -19,7 +16,6 @@ export const fetchWeatherData = async (lat: number, lon: number) => {
   }
 };
 
-// Function to fetch weather forecast data for a country
 export const fetchWeatherForecast = async (country: string) => {
   try {
     const response = await axios.get(

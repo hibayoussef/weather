@@ -1,11 +1,7 @@
-import './App.css';
-import HumidityMap from './component/Map';
+import HumidityMap from "./pages/HumidityMap";
 
 function App() {
   return (
-    // <div className="App">
-    //   Hi
-    // </div>
     <>
       <HumidityMap />
     </>
